@@ -34,7 +34,7 @@ if ('development' == app.get('env')) {
 // var db = require("mongojs").connect(dbUrl, collections);
 
 app.get('/books', routes.books.all);
-
+app.get('/books/:id', routes.books.one);
 
 
 http.createServer(app).listen(app.get('port'), function(){
