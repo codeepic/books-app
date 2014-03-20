@@ -1,8 +1,13 @@
+var db = require("../database.js")
 
-/*
- * GET home page.
- */
+exports.books = {};
 
-exports.index = function(req, res){
-  res.render('index', { title: 'Express' });
+exports.books.all = function(req, res){
+	db.books.find({}, function(err, books){
+  	if(err) return;
+  	var response = {
+  		books: books
+  	};
+  	res.json(response);
+  });
 };

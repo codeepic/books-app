@@ -28,26 +28,12 @@ if ('development' == app.get('env')) {
 }
 
 //my stuff here
-var dbUrl = "library";
-var collections = ["books"];
+// var dbUrl = "library";
+// var collections = ["books"];
 
-var db = require("mongojs").connect(dbUrl, collections);
+// var db = require("mongojs").connect(dbUrl, collections);
 
-app.get('/', routes.index);
-// app.get("/blobs", function(req, res){
-//   res.send("kurwa");
-// });
-app.get('/books', function(req, res){
-  //do query on a database
-  db.books.find({}, function(err, books){
-  	if(err) return;
-  	var response = {
-  			books: books
-  	};
-  	res.json(response);
-  });
-});
-//my stuff above
+app.get('/books', routes.books.all);
 
 
 
