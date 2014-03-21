@@ -1,5 +1,9 @@
 var db = require("../database.js")
 
+exports.index = function(req, res){
+	res.render("index"); //you pass the name of the view to render
+};
+
 exports.books = {};
 
 exports.books.all = function(req, res){
@@ -16,4 +20,9 @@ exports.books.one = function(req, res){
   	if(err) return;
   	res.json(book);
   });
+};
+
+exports.books.create = function(req, res){
+	res.json(req.body);
+	db.books.save(req.body);
 };
