@@ -14,7 +14,6 @@ exports.books.all = function(req, res){
 };
 
 exports.books.one = function(req, res){
-  //console.log(req.params);
 	var bookId = db.ObjectId(req.params.id);
   db.books.findOne({"_id": bookId}, function(err, book){
   	if(err) return;
