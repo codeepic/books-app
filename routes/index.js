@@ -1,7 +1,12 @@
 var db = require("../database.js")
 
 exports.index = function(req, res){
-	res.render("index"); //you pass the name of the view to render
+	db.books.find(function(err, books){
+    var data = JSON.stringify(books);
+		res.render("index", {
+			appData: data
+		}); //you pass the name of the view to render
+	});
 };
 
 exports.books = {};

@@ -9,7 +9,10 @@ var BookCollection = Backbone.Collection.extend({
 });
 
 var BookView = Backbone.View.extend({
-	template: "li",
+	events: {
+		"click .name": "singleBookLink"
+	},
+	tagName: "li",
 	className: "book",
 	render: function(){
 		var template = $("#booktemplate").html();
@@ -22,7 +25,22 @@ var BookView = Backbone.View.extend({
 		//this.$el --> same, but now it's wrapped in jQuery object, 
 		//we can use them interchangeably, but every time we want to use jQuery method with
 		// our view, we need to use $el
+	},
+	singleBookLink: function(e){
+		e.preventDefault();
+		var id = this.model.get("_id");
+		router.navigate("book/" + id, {trigger: true});
 	}
+});
+
+var DetailedBookView = Backbone.View.extend({
+  render: function(){
+  	var template = $("#detailedbooktemplate").html();
+  	var compiled = Handlebars.compile(template);
+  	var html = compiled(this.model.attributes);
+  	this.$el.html(html);
+  	return this;
+  }
 });
 
 var BookCollectionView = Backbone.View.extend({
@@ -42,13 +60,30 @@ var BookCollectionView = Backbone.View.extend({
 });
 
 var AppRouter = Backbone.Router.extend({
+	initialize: function(){
+		this._setupCollection();
+	},
   routes: {
-  	"": "index"
+  	"": "index",
+  	"book/:id": "singleBook"
   },
+  _setupCollection: function(){
+  	if(this.collection) return;
+  	var data = JSON.parse($("#initialContent").html());
+  	this.collection = new BookCollection(data);
+	},
+	_renderView: function(view){
+		$(".app").html(view.render().el);
+	},
   index: function(){
-  	var collection = new BookCollection();
-  	collection.fetch({reset: true});
-  	var view = new BookCollectionView({collection: collection});
-  	$(".app").html(view.render().el);
+  	var view = new BookCollectionView({collection: this.collection});
+  	this._renderView(view);
+  },
+  singleBook: function(id){
+  	console.log("route" + id);
+  	var book = this.collection.get(id);
+  	var view = new DetailedBookView({model: book});
+  	this._renderView(view);
   }
+
 });

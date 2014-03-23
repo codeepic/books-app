@@ -1,5 +1,5 @@
 //kickoff the application
 $(function(){
-	new AppRouter();
+	window.router = new AppRouter();
 	Backbone.history.start();
 });
